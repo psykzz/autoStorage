@@ -32,22 +32,22 @@
 
             //submit = (settings['submit'] !== undefined) ? settings['submit'] : true;
             prefix = (settings['prefix'] !== undefined) ? settings['prefix'] : 'as-';
-            console.log('init ing');
             init();
-            console.log('finished init');
         });
         
         $(':input').change( function() {
-            console.log('change');
             return on_change($(this));
         });
         
         function init() {
             // Iterate through all the inputs and assign them a value
-            $(':input').each( function () { // Some sanity checks
+            $('input, select, textarea').each( function () { // Some sanity checks
 
                 if($(this).is('select')) {
                     $(this).attr('type','select'); // select fix
+                }
+                if($(this).is('textarea')) {
+                    $(this).attr('type','textarea'); // textarea fix
                 }
 
                 if(hasValue($(this).attr('type'), exclude_types)) {  return true; } // Was it explicity excluded?
@@ -57,21 +57,19 @@
                 if (_ignore!==undefined) { if(_ignore.toLowerCase()=='true'){ return true; } }
 
                 $(this).data('as-id', node_count++); // Assign our custom id
-                console.log($(this).data('as-id'));
                 as_ident += $(this).attr('type').length * node_count; // Give us a unique number depending on what the type order is
             });
-            if(as_ident!=_load("as_ident")) { return false; } // Ident is different, we shouldnt continue loading anything
+            if(as_ident!=_load("ident")) { return false; } // Ident is different, we shouldnt continue loading anything
 
             // Get the keystore
             parse_keystore();
 
             jQuery.each(_cache, function(key, v) {
                 if (v!=null) { console.log('uh oh'); }
-                keys = $(":input").find("[data-as-id='" + key + "']");
-                if(eles.length == 0) { return true; }
+                keys = $("input[data-as-id='" + key + "'], select[data-as-id='" + key + "'], textarea[data-as-id='" + key + "']");
+                if(keys.length == 0) { console.log('Couldnt find the element'); return true; }
                 value = _load(key);
                 jQuery.each(eles, function(k, ele) {
-                    console.log('setting old value');
                     ele.val(value);
                 });
             });
@@ -100,6 +98,7 @@
                 }
             }
             data.setItem(prefix+'keystore', JSON.stringify(keys.join(",")));
+            data.setItem(prefix+'ident', JSON.stringify(as_ident));
             // finally return
             return data.setItem(prefix+key, JSON.stringify(object));
         }
@@ -195,3 +194,7 @@
         }   
     };
 })( jQuery );
+
+$(document).ready( function() {
+    $().autoStore();
+});
