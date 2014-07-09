@@ -1,9 +1,9 @@
 /*!
- * jQuery autoStorage Plugin
- * Examples and documentation at: http://www.phunkei.de
- * Github: https://github.com/phunkei/autoStorage
- * Copyright (c) 2011 - 2013 Daniel Miguel Baltes Amado
- * Version: 0.7
+ * jQuery autoStore Plugin
+ * Based on code from https://github.com/phunkei/autoStorage by Daniel Miguel Baltes Amado
+ * Original copyright (c) 2011 - 2013 Daniel Miguel Baltes Amado
+ * Revised by Matt Smith 
+ * Version: 0.1
  */
 (function( $ ){
     $.fn.autoStore = function(options) {
