@@ -194,7 +194,7 @@
         }   
     };
 })( jQuery );
-
+/*
 $(document).ready( function() {
     $().autoStore();
-});
+});*/
